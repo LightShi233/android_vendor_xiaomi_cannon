@@ -1,0 +1,166 @@
+// Copyright (C) 2024 Xiaomi Corporation
+// AIDL HAL Shim for Android 14 Compatibility
+
+package {
+    default_applicable_licenses: ["external_apache_license"],
+}
+
+// Common shim utilities
+cc_library_static {
+    name: "neuralnetworks_aidl_shim_common",
+    srcs: [
+        "common/NeuronApiShim.cpp",
+    ],
+    cflags: [
+        "-Wall",
+        "-Werror",
+        "-Wno-unused-parameter",
+        "-DLOG_TAG=\"NeuralNetworksAidlShim\"",
+    ],
+    shared_libs: [
+        "libdl",
+        "liblog",
+        "libutils",
+    ],
+    vendor: true,
+}
+
+// NeuralNetworks AIDL HAL definitions
+aidl_interface {
+    name: "android.hardware.neuralnetworks_aidl",
+    vendor_available: true,
+    srcs: [
+        "neuralnetworks/aidl/android/hardware/neuralnetworks/*.aidl",
+    ],
+    stability: "vintf",
+    backend: {
+        cpp: {
+            enabled: true,
+        },
+        java: {
+            enabled: false,
+        },
+    },
+}
+
+// WiFi AIDL HAL definitions
+aidl_interface {
+    name: "android.hardware.wifi_aidl",
+    vendor_available: true,
+    srcs: [
+        "wifi/aidl/android/hardware/wifi/*.aidl",
+    ],
+    stability: "vintf",
+    backend: {
+        cpp: {
+            enabled: true,
+        },
+        java: {
+            enabled: false,
+        },
+    },
+}
+
+// NeuralNetworks AIDL Shim Library
+cc_library_shared {
+    name: "android.hardware.neuralnetworks-aidl-shim",
+    srcs: [
+        "neuralnetworks/NeuralNetworksDevice.cpp",
+        "neuralnetworks/PreparedModel.cpp",
+    ],
+    cflags: [
+        "-Wall",
+        "-Werror",
+        "-Wno-unused-parameter",
+        "-DLOG_TAG=\"NeuralNetworksAidlShim\"",
+    ],
+    shared_libs: [
+        "libbase",
+        "libbinder_ndk",
+        "libdl",
+        "liblog",
+        "libutils",
+        "android.hardware.neuralnetworks_aidl-cpp",
+    ],
+    static_libs: [
+        "neuralnetworks_aidl_shim_common",
+    ],
+    vendor: true,
+}
+
+// NeuralNetworks AIDL Shim Service
+cc_binary {
+    name: "android.hardware.neuralnetworks-aidl-shim-service",
+    srcs: [
+        "neuralnetworks/service.cpp",
+    ],
+    cflags: [
+        "-Wall",
+        "-Werror",
+        "-Wno-unused-parameter",
+        "-DLOG_TAG=\"NeuralNetworksAidlShim\"",
+    ],
+    shared_libs: [
+        "libbase",
+        "libbinder_ndk",
+        "libdl",
+        "liblog",
+        "libutils",
+        "android.hardware.neuralnetworks_aidl-cpp",
+        "android.hardware.neuralnetworks-aidl-shim",
+    ],
+    init_rc: ["neuralnetworks/android.hardware.neuralnetworks-aidl-shim-service.rc"],
+    vintf_fragments: ["neuralnetworks/android.hardware.neuralnetworks-aidl-shim.xml"],
+    vendor: true,
+}
+
+// WiFi Supplicant AIDL Shim Library
+cc_library_shared {
+    name: "android.hardware.wifi.supplicant-aidl-shim",
+    srcs: [
+        "wifi/WifiSupplicantShim.cpp",
+    ],
+    cflags: [
+        "-Wall",
+        "-Werror",
+        "-Wno-unused-parameter",
+        "-DLOG_TAG=\"WifiSupplicantAidlShim\"",
+    ],
+    shared_libs: [
+        "libbase",
+        "libbinder_ndk",
+        "libhidlbase",
+        "liblog",
+        "libutils",
+        "android.hardware.wifi_aidl-cpp",
+        "android.hardware.wifi.supplicant@1.4",
+    ],
+    vendor: true,
+}
+
+// WiFi Supplicant AIDL Shim Service
+cc_binary {
+    name: "android.hardware.wifi.supplicant-aidl-shim-service",
+    srcs: [
+        "wifi/service.cpp",
+    ],
+    cflags: [
+        "-Wall",
+        "-Werror",
+        "-Wno-unused-parameter",
+        "-DLOG_TAG=\"WifiSupplicantAidlShim\"",
+    ],
+    shared_libs: [
+        "libbase",
+        "libbinder_ndk",
+        "libhidlbase",
+        "liblog",
+        "libutils",
+        "android.hardware.wifi_aidl-cpp",
+        "android.hardware.wifi.supplicant-aidl-shim",
+        "android.hardware.wifi.supplicant@1.4",
+    ],
+    init_rc: ["wifi/android.hardware.wifi.supplicant-aidl-shim-service.rc"],
+    vintf_fragments: ["wifi/android.hardware.wifi.supplicant-aidl-shim.xml"],
+    vendor: true,
+}

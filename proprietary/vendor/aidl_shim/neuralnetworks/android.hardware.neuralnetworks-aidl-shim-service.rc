@@ -1,0 +1,7 @@
+# Neural Networks AIDL HAL Shim Service
+service neuralnetworks_aidl_shim /vendor/bin/hw/android.hardware.neuralnetworks-aidl-shim-service
+    class hal
+    user system
+    group system
+    interface aidl android.hardware.neuralnetworks.IDevice/default
+    seclabel u:r:neuralnetworks_aidl_shim:s0

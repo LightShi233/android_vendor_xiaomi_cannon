@@ -1,0 +1,7 @@
+# WiFi Supplicant AIDL HAL Shim Service
+service wifi_supplicant_aidl_shim /vendor/bin/hw/android.hardware.wifi.supplicant-aidl-shim-service
+    class hal
+    user wifi
+    group wifi inet net_admin net_raw
+    interface aidl android.hardware.wifi.Supplicant/default
+    seclabel u:r:wifi_supplicant_aidl_shim:s0

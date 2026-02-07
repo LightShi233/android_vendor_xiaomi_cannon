@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- WiFi Supplicant AIDL HAL Shim - bridges to wpa_supplicant HIDL 1.4 -->
+<manifest version="1.0" type="device">
+    <hal format="aidl">
+        <name>android.hardware.wifi</name>
+        <version>1</version>
+        <fqname>Supplicant/default</fqname>
+    </hal>
+</manifest>
